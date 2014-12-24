@@ -1,5 +1,5 @@
 @theme: 'paper';
-@bootstrap: '../../bower_components/bootstrap/less';
+@bootstrap: 'node_modules/bootstrap/less';
 
 // google material colors
 @import "./colors.less";
@@ -53,11 +53,6 @@
 @import "@{bootstrap}/carousel.less";
 
 @import "./themes/@{theme}/bootswatch.less";
-
-// SECTIONS
-header { @import "./sections/header.less"; }
-section { @import "./sections/page.less"; }
-footer { @import "./sections/footer.less"; }
 
 // Utility classes
 @import "@{bootstrap}/utilities.less";

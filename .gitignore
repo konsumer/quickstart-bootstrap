@@ -1,7 +1,3 @@
-node_nodules
+node_modules
 npm-debug.log
-bower_components
 .DS_Store
-
-dist/*.css
-dist/*.js

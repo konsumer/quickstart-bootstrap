@@ -1,6 +1,6 @@
 ### development
 
-- `make setup` - install the build tools
-- `make build` - compress CSS & javascript with browserify & less
-- `make` - light dev build, no minification
-- `make clean` - delete built files
+- `npm install` - install the build tools
+- `npm run prod` - compress CSS & javascript with browserify & less
+- `npm run dev` - light dev build, no minification
+- `npm run clean` - delete built files
