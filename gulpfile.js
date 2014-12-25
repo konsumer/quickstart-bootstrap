@@ -9,18 +9,20 @@ var less = require('gulp-less-sourcemap');
 var browserify = require('browserify');
 var jade = require('gulp-jade');
 var browserify = require('gulp-browserify');
-var source = require('vinyl-source-stream');
 var minifyCSS = require('gulp-minify-css');
 var uglify = require('gulp-uglify');
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant');
+var merge = require('merge-stream');
 
 var dirSrc = 'src';
 var dirDist = 'dist';
 
-var dirCss = path.join(dirDist, 'css');
+var dirCss = path.join(dirDist);
 var dirCssSrc = path.join(dirSrc, 'less');
 var entryLess = 'app.less';
 
-var dirJs = path.join(dirDist, 'js');
+var dirJs = dirDist;
 var dirJsSrc = path.join(dirSrc, 'js');
 var entryJs = 'app.js';
 
@@ -117,22 +119,37 @@ gulp.task('tpl', function() {
     .pipe(notify("Complete: <%= file.relative %>"));
 });
 
-gulp.task('assets', function(){
-  return gulp.src([
-    dirSrc + '/fonts/**/*',
-    // dirSrc + '**/*',
-    // '!' + dirJsSrc + '/**/*',
-    // '!' + dirCssSrc + '/**/*',
-    // '!' + dirTplSrc + '/**/*',
-  ], {base: dirSrc})
-    
+gulp.task('assets:dev', function(){
+  return gulp.src([dirSrc + '/fonts/**/*', dirSrc + '/images/**/*'])
+    .pipe(gulp.dest(dirDist))
     .on("error", notify.onError({
       message: 'Assset copy Error: <%= error.message %>',
     }))
-
-    .pipe(gulp.dest(dirDist));
-
+    .pipe(notify("Copied Assets."));
 });
 
-gulp.task('dev', ['assets','tpl','css:dev', 'js:dev']);
-gulp.task('prod', ['assets','tpl','css:prod', 'js:prod']);
+gulp.task('assets:prod', function(){
+  var tubeImage = gulp.src(dirSrc + '/images/**/*')
+    .pipe(imagemin({
+      progressive: true,
+      svgoPlugins: [{removeViewBox: false}],
+      use: [pngquant()]
+    }))
+    .on("error", notify.onError({
+      message: 'Image Minification Error: <%= error.message %>',
+    }))
+    .pipe(gulp.dest('dist'))
+    .pipe(notify("Minified image: <%= file.relative %>"));
+  
+  var tubeFonts = gulp.src(dirSrc + '/fonts/**/*', {base:dirSrc})
+    .on("error", notify.onError({
+      message: 'Font Copy Error: <%= error.message %>',
+    }))
+    .pipe(gulp.dest('dist'))
+    .pipe(notify("Copied Font: <%= file.relative %>"));
+
+  return merge(tubeImage, tubeFonts);
+});
+
+gulp.task('dev', ['assets:dev','tpl','css:dev', 'js:dev']);
+gulp.task('prod', ['assets:prod','tpl','css:prod', 'js:prod']);

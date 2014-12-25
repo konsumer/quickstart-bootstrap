@@ -1,12 +1,10 @@
 @theme: 'cosmo';
 @bootstrap: 'node_modules/bootstrap/less';
 
-// google material colors
-@import "./colors.less";
-
 // Core variables and mixins
 @import "@{bootstrap}/variables.less";
 @import "node_modules/bootswatch/@{theme}/variables.less";
+@import "./variables.less";
 @import "@{bootstrap}/mixins.less";
 
 // Reset and dependencies
@@ -58,4 +56,4 @@
 
 // extra lil touches
 @import "node_modules/bootswatch/@{theme}/bootswatch.less";
-@import "@{bootstrap}/theme.less";
+//@import "@{bootstrap}/theme.less";

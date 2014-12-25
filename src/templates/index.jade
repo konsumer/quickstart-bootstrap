@@ -7,7 +7,7 @@ html(lang='en')
     meta(name='description', content='#{package.description}')
     meta(name='author', content='#{package.author}')
     title #{package.name}
-    link(href='#{pathToAssets}/css/app.css', rel='stylesheet')
+    link(href='#{pathToAssets}/app.css', rel='stylesheet')
     <!--[if lt IE 9]>
     <script src='https://rawgit.com/twbs/bootstrap/master/docs/assets/js/ie8-responsive-file-warning.js'></script>
     <script src='https://rawgit.com/twbs/bootstrap/master/docs/assets/js/ie-emulation-modes-warning.js'></script>
@@ -57,7 +57,7 @@ html(lang='en')
       .jumbotron
         h1 Hello, world!
         p
-          | This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.
+          | Make sure to configure your app in <code>package.json</code>. You can change this text in <code>src/templates/index.jade</code>, and you can change the theme in <code>src/less/app.less</code>.
         p
           a.btn.btn-primary.btn-lg(href='#', role='button') Learn more &raquo;
       .page-header
@@ -513,6 +513,6 @@ html(lang='en')
           span.glyphicon.glyphicon-chevron-right
     // /container
 
-    hr.clearfix
+    hr
     
-    script(src='#{pathToAssets}/js/app.js')
+    script(src='#{pathToAssets}/app.js')
