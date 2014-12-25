@@ -1,6 +1,6 @@
-require('../less/app.less');
+'use strict';
 
-var $ = jQuery = require('jquery/dist/jquery.js');
+require('jquery');
 
 require('bootstrap/js/transition.js');
 require('bootstrap/js/alert.js');
@@ -14,7 +14,3 @@ require('bootstrap/js/popover.js');
 require('bootstrap/js/scrollspy.js');
 require('bootstrap/js/tab.js');
 require('bootstrap/js/affix.js');
-
-$(function(){
-	$('.no-fouc').removeClass('no-fouc');
-});

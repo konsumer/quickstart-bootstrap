@@ -1,6 +1,3 @@
-### development
-
-- `npm install` - install the build tools
-- `npm run prod` - compress CSS & javascript with browserify & less
-- `npm run dev` - light dev build, no minification
-- `npm run clean` - delete built files
+- `npm install` - install build tools
+- `npm start` - run a live-reloading, auto-compiling, development server (set this as your build command in sublime text)
+- `npm run build` - build an optimized/minified version of your app

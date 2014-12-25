@@ -1,4 +1,4 @@
-@theme: 'paper';
+@theme: 'cosmo';
 @bootstrap: 'node_modules/bootstrap/less';
 
 // google material colors
@@ -52,8 +52,10 @@
 @import "@{bootstrap}/popovers.less";
 @import "@{bootstrap}/carousel.less";
 
-@import "./themes/@{theme}/bootswatch.less";
-
 // Utility classes
 @import "@{bootstrap}/utilities.less";
 @import "@{bootstrap}/responsive-utilities.less";
+
+// extra lil touches
+@import "./themes/@{theme}/bootswatch.less";
+@import "@{bootstrap}/theme.less";
