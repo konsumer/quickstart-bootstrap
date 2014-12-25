@@ -120,7 +120,7 @@ gulp.task('tpl', function() {
 });
 
 gulp.task('assets:dev', function(){
-  return gulp.src([dirSrc + '/fonts/**/*', dirSrc + '/images/**/*'])
+  return gulp.src([dirSrc + '/fonts/**/*', dirSrc + '/images/**/*'], {base:dirSrc})
     .pipe(gulp.dest(dirDist))
     .on("error", notify.onError({
       message: 'Assset copy Error: <%= error.message %>',
