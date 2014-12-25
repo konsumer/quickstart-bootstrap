@@ -14,6 +14,7 @@ var uglify = require('gulp-uglify');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 var merge = require('merge-stream');
+var connect = require('gulp-connect');
 
 var dirSrc = 'src';
 var dirDist = 'dist';
@@ -41,7 +42,8 @@ gulp.task('css:dev', function () {
     }))
     
     .pipe(gulp.dest(dirCss))
-    .pipe(notify("Complete: <%= file.relative %>"));
+    .pipe(notify("Complete: <%= file.relative %>"))
+    .pipe(connect.reload());
 });
 
 gulp.task('css:prod', function () {
@@ -76,7 +78,8 @@ gulp.task('js:dev', function () {
     }))
 
     .pipe(gulp.dest(dirJs))
-    .pipe(notify("Complete: <%= file.relative %>"));
+    .pipe(notify("Complete: <%= file.relative %>"))
+    .pipe(connect.reload());
 });
 
 gulp.task('js:prod', function () {
@@ -116,7 +119,8 @@ gulp.task('tpl', function() {
     }))
 
     .pipe(gulp.dest(dirTpl))
-    .pipe(notify("Complete: <%= file.relative %>"));
+    .pipe(notify("Complete: <%= file.relative %>"))
+    .pipe(connect.reload());
 });
 
 gulp.task('assets:dev', function(){
@@ -125,7 +129,8 @@ gulp.task('assets:dev', function(){
     .on("error", notify.onError({
       message: 'Assset copy Error: <%= error.message %>',
     }))
-    .pipe(notify("Copied Assets."));
+    .pipe(notify("Copied Asset: <%= file.relative %>"))
+    .pipe(connect.reload());
 });
 
 gulp.task('assets:prod', function(){
@@ -151,5 +156,20 @@ gulp.task('assets:prod', function(){
   return merge(tubeImage, tubeFonts);
 });
 
+gulp.task('connect', function() {
+  connect.server({
+    root: 'dist',
+    livereload: true
+  });
+});
+
+gulp.task('watch', ['dev'], function() {
+  gulp.watch(dirCssSrc + '/**/*.less', ['css:dev']);
+  gulp.watch(dirJsSrc + '/**/*.js', ['js:dev']);
+  gulp.watch([dirSrc + '/fonts/**/*', dirSrc + '/images/**/*'], ['assets:dev']);
+  gulp.watch(dirTplSrc + '/**/*', ['tpl']);
+});
+
+gulp.task('server', ['watch', 'connect']);
 gulp.task('dev', ['assets:dev','tpl','css:dev', 'js:dev']);
 gulp.task('prod', ['assets:prod','tpl','css:prod', 'js:prod']);
