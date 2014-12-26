@@ -22,14 +22,20 @@ var dirDist = 'dist';
 var dirCss = path.join(dirDist);
 var dirCssSrc = path.join(dirSrc, 'less');
 var entryLess = 'app.less';
+var allCss = '/**/*.less';
 
 var dirJs = dirDist;
 var dirJsSrc = path.join(dirSrc, 'js');
 var entryJs = 'app.js';
+var allJs = '/**/*.js';
 
 var dirTpl = dirDist;
 var dirTplSrc = path.join(dirSrc, 'templates');
 var entryTpl = '*.jade';
+var allTpl = '/**/*';
+
+var allFonts = '/fonts/**/*';
+var allImages = '/images/**/*';
 
 gulp.task('css:dev', function () {
   return gulp.src(path.join(dirCssSrc, entryLess))
@@ -124,7 +130,7 @@ gulp.task('tpl', function() {
 });
 
 gulp.task('assets:dev', function(){
-  return gulp.src([dirSrc + '/fonts/**/*', dirSrc + '/images/**/*'], {base:dirSrc})
+  return gulp.src([dirSrc + allFonts, dirSrc + allImages], {base:dirSrc})
     .pipe(gulp.dest(dirDist))
     .on("error", notify.onError({
       message: 'Assset copy Error: <%= error.message %>',
@@ -134,7 +140,7 @@ gulp.task('assets:dev', function(){
 });
 
 gulp.task('assets:prod', function(){
-  var tubeImage = gulp.src(dirSrc + '/images/**/*')
+  var tubeImage = gulp.src(dirSrc + allImages)
     .pipe(imagemin({
       progressive: true,
       svgoPlugins: [{removeViewBox: false}],
@@ -146,7 +152,7 @@ gulp.task('assets:prod', function(){
     .pipe(gulp.dest('dist'))
     .pipe(notify("Minified image: <%= file.relative %>"));
   
-  var tubeFonts = gulp.src(dirSrc + '/fonts/**/*', {base:dirSrc})
+  var tubeFonts = gulp.src(dirSrc + allFonts, {base:dirSrc})
     .on("error", notify.onError({
       message: 'Font Copy Error: <%= error.message %>',
     }))
@@ -158,16 +164,16 @@ gulp.task('assets:prod', function(){
 
 gulp.task('connect', function() {
   connect.server({
-    root: 'dist',
+    root: dirDist,
     livereload: true
   });
 });
 
 gulp.task('watch', ['dev'], function() {
-  gulp.watch(dirCssSrc + '/**/*.less', ['css:dev']);
-  gulp.watch(dirJsSrc + '/**/*.js', ['js:dev']);
-  gulp.watch([dirSrc + '/fonts/**/*', dirSrc + '/images/**/*'], ['assets:dev']);
-  gulp.watch(dirTplSrc + '/**/*', ['tpl']);
+  gulp.watch(dirCssSrc + allCss, ['css:dev']);
+  gulp.watch(dirJsSrc + allJs, ['js:dev']);
+  gulp.watch([dirSrc + allFonts, dirSrc + allImages], ['assets:dev']);
+  gulp.watch(dirTplSrc + allTpl, ['tpl']);
 });
 
 gulp.task('server', ['watch', 'connect']);
