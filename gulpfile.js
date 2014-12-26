@@ -1,7 +1,6 @@
 var path = require('path');
 var fs = require('fs');
 var notify = require("gulp-notify");
-
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var changed = require('gulp-changed');
