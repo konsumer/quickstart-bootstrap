@@ -18,7 +18,7 @@ var connect = require('gulp-connect');
 var dirSrc = 'src';
 var dirDist = 'dist';
 
-var dirCss = path.join(dirDist);
+var dirCss = dirDist;
 var dirCssSrc = path.join(dirSrc, 'less');
 var entryLess = 'app.less';
 var allCss = '/**/*.less';
