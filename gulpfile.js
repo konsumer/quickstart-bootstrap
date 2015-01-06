@@ -1,9 +1,8 @@
 var path = require('path');
 var fs = require('fs');
-var notify = require("gulp-notify");
+var notify = require('gulp-notify');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var changed = require('gulp-changed');
 var less = require('gulp-less-sourcemap');
 var browserify = require('browserify');
 var jade = require('gulp-jade');
@@ -14,6 +13,8 @@ var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 var merge = require('merge-stream');
 var connect = require('gulp-connect');
+
+var verbose = false;
 
 var dirSrc = 'src';
 var dirDist = 'dist';
@@ -26,7 +27,7 @@ var allCss = '/**/*.less';
 var dirJs = dirDist;
 var dirJsSrc = path.join(dirSrc, 'js');
 var entryJs = 'app.js';
-var allJs = '/**/*.js';
+var allJs = '/**/*.js*';
 
 var dirTpl = dirDist;
 var dirTplSrc = path.join(dirSrc, 'templates');
@@ -38,8 +39,6 @@ var allImages = '/images/**/*';
 
 gulp.task('css:dev', function () {
   return gulp.src(path.join(dirCssSrc, entryLess))
-    .pipe(changed(dirCss, {extension: '.css'}))
-    
     .pipe(less())
 
     .on("error", notify.onError({
@@ -53,8 +52,6 @@ gulp.task('css:dev', function () {
 
 gulp.task('css:prod', function () {
   return gulp.src(path.join(dirCssSrc, entryLess))
-    .pipe(changed(dirCss, {extension: '.css'}))
-    
     .pipe(less())
     .pipe(minifyCSS({keepBreaks: false}))
 
@@ -70,6 +67,7 @@ gulp.task('js:dev', function () {
   return gulp.src(path.join(dirJsSrc, entryJs))
     .pipe(browserify({
       insertGlobals : true,
+      noBuiltins:true,
       shim: {
         jQuery: {
           path: 'node_modules/jquery/dist/jquery.js',
@@ -91,6 +89,7 @@ gulp.task('js:prod', function () {
   return gulp.src(path.join(dirJsSrc, entryJs))
     .pipe(browserify({
       insertGlobals : true,
+      noBuiltins:true,
       shim: {
         jQuery: {
           path: 'node_modules/jquery/dist/jquery.js',
@@ -110,8 +109,6 @@ gulp.task('js:prod', function () {
 
 gulp.task('tpl', function() {
   return gulp.src(path.join(dirTplSrc, entryTpl))
-    .pipe(changed(dirTpl, {extension: '.jade'}))
-    
     .pipe(jade({
       locals: {
         package: require('./package.json'),
@@ -124,7 +121,7 @@ gulp.task('tpl', function() {
     }))
 
     .pipe(gulp.dest(dirTpl))
-    .pipe(notify("Complete: <%= file.relative %>"))
+    .pipe(!verbose ? gutil.noop() : notify("Complete: <%= file.relative %>"))
     .pipe(connect.reload());
 });
 
@@ -134,7 +131,7 @@ gulp.task('assets:dev', function(){
     .on("error", notify.onError({
       message: 'Assset copy Error: <%= error.message %>',
     }))
-    .pipe(notify("Copied Asset: <%= file.relative %>"))
+    .pipe(!verbose ? gutil.noop() : notify("Copied Asset: <%= file.relative %>"))
     .pipe(connect.reload());
 });
 
@@ -149,14 +146,14 @@ gulp.task('assets:prod', function(){
       message: 'Image Minification Error: <%= error.message %>',
     }))
     .pipe(gulp.dest('dist'))
-    .pipe(notify("Minified image: <%= file.relative %>"));
+    .pipe(!verbose ? gutil.noop() : notify("Minified image: <%= file.relative %>"));
   
   var tubeFonts = gulp.src(dirSrc + allFonts, {base:dirSrc})
     .on("error", notify.onError({
       message: 'Font Copy Error: <%= error.message %>',
     }))
     .pipe(gulp.dest('dist'))
-    .pipe(notify("Copied Font: <%= file.relative %>"));
+    .pipe(!verbose ? gutil.noop() : notify("Copied Font: <%= file.relative %>"));
 
   return merge(tubeImage, tubeFonts);
 });
