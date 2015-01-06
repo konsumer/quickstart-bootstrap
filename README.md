@@ -1,3 +1,11 @@
+## new project checklist
+
+- [ ] download [the zip](https://github.com/konsumer/quickstart-bootstrap/archive/master.zip) of this project
+- [ ] modify fields for your project in `package.json`
+- [ ] `npm install`
+- [ ] `npm start`
+
+
 ## features
 
 - Make a custom, themed, streamlined bootstrap by commenting stuff in `src/less/app.less`
