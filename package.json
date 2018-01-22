@@ -16,7 +16,8 @@
     "gulp-uglify": "latest",
     "gulp-util": "latest",
     "imagemin-pngquant": "latest",
-    "merge-stream": "latest"
+    "merge-stream": "latest",
+    "uglify-js": "^2.6.0"
   },
   "scripts": {
     "start": "gulp server",
